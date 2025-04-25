@@ -284,9 +284,9 @@ import joblib
 from catboost import CatBoostRegressor
 
 # Load models
-gb_model = joblib.load("gb_model.pkl")
+gb_model = joblib.load("best_model_GB.pkl")
 cat_model = CatBoostRegressor()
-cat_model.load_model("catboost_model.cbm")
+cat_model.load_model("best_model_catboost.pkl")
 
 
 
