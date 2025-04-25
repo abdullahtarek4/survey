@@ -1,9 +1,9 @@
-streamlit
-matplotlib
-seaborn
-openpyxl
-catboost
+numpy==1.24.2
 joblib==1.1.0
 scikit-learn==1.0.2
 pandas==1.4.1
-numpy==1.23.1
+matplotlib==3.10.1
+seaborn==0.13.2
+openpyxl==3.1.5
+catboost==1.2.8
+streamlit==1.44.1
