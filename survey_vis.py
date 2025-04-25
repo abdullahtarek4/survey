@@ -247,10 +247,14 @@ except Exception as e:
 
 import joblib
 from catboost import CatBoostRegressor
+import os
 
 # Load models
-gb_model = joblib.load("best_model_GB.pkl")
+model_path = os.path.join(os.getcwd(), "best_model_GB.pkl")
+gb_model = joblib.load(model_path)
+
 cat_model = CatBoostRegressor()
+model_path2 = os.path.join(os.getcwd(), "best_model_catboost.pkl")
 cat_model.load_model("best_model_catboost.pkl")
 
 
