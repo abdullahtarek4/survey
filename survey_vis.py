@@ -248,37 +248,47 @@ except Exception as e:
 import joblib
 from catboost import CatBoostRegressor
 import os
+catboost_model = joblib.load('best_model_catboost.pkl')
+gbr_model = joblib.load('best_model_GB.pkl')
 
-# Load models
-model_path = os.path.join(os.getcwd(), "best_model_GB.pkl")
-gb_model = joblib.load(model_path)
+# Function to make predictions using CatBoost
+def catboost_predict(features):
+    return catboost_model.predict(features)
 
-cat_model = CatBoostRegressor()
-model_path2 = os.path.join(os.getcwd(), "best_model_catboost.pkl")
-cat_model.load_model("best_model_catboost.pkl")
+# Function to make predictions using GBR
+def gbr_predict(features):
+    return gbr_model.predict(features)
 
+# Streamlit app UI
+st.title("Model Predictions")
 
+# Add a description or instructions for the user
+st.markdown("""
+This app uses two machine learning models:
+1. CatBoost Regressor
+2. Gradient Boosting Regressor (GBR)
 
-# Input fields
-st.header("📋 Enter Student Details")
-study_hours = st.number_input("Study Hours per Day", min_value=0.0, max_value=24.0, value=2.0)
-attendance = st.slider("Attendance Percentage", min_value=0, max_value=100, value=75)
-assignments = st.number_input("Assignments Completed", min_value=0, max_value=10, value=5)
+Enter the required features, and it will provide predictions using both models.
+""")
 
-# Collect inputs
-input_data = pd.DataFrame([[study_hours, attendance, assignments]],
-                          columns=["study_hours", "attendance", "assignments"])
+# Input features (assuming a set of features for regression)
+# Adjust based on the features your models expect (e.g., numeric inputs, etc.)
+feature1 = st.number_input('Enter feature 1', value=1.0)
+feature2 = st.number_input('Enter feature 2', value=1.0)
+feature3 = st.number_input('Enter feature 3', value=1.0)
 
-# Predict button
-if st.button("Predict Readiness"):
-    gb_pred = gb_model.predict(input_data)[0]
-    cat_pred = cat_model.predict(input_data)[0]
+# You can add more features based on your model input requirements.
 
-    # Threshold for readiness
-    threshold = 0.5
-    gb_result = "Ready ✅" if gb_pred >= threshold else "Not Ready ❌"
-    cat_result = "Ready ✅" if cat_pred >= threshold else "Not Ready ❌"
+# Prepare the feature vector (replace with actual feature names)
+features = np.array([[feature1, feature2, feature3]])
 
-    st.subheader("🔮 Prediction Results:")
-    st.write(f"**Gradient Boosting Prediction:** {gb_result} (Score: {gb_pred:.2f})")
-    st.write(f"**CatBoost Prediction:** {cat_result} (Score: {cat_pred:.2f})")
+# Make predictions when the button is clicked
+if st.button("Predict"):
+    # Make predictions
+    catboost_pred = catboost_predict(features)
+    gbr_pred = gbr_predict(features)
+
+    # Display predictions
+    st.subheader("Predictions:")
+    st.write(f"CatBoost Prediction: {catboost_pred[0]}")
+    st.write(f"GBR Prediction: {gbr_pred[0]}")
