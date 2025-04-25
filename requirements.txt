@@ -1,5 +1,5 @@
-streamlit==1.44.1
-joblib==1.1.0
-catboost==1.2.8
-scikit-learn==1.0.2
-pandas==1.4.1
+streamlit
+pandas
+matplotlib
+seaborn
+openpyxl
