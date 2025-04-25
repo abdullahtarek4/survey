@@ -244,41 +244,6 @@ try:
 except Exception as e:
     st.error(f"Error loading data: {e}")
 
-import joblib
-from catboost import CatBoostRegressor
-
-# Load models
-gb_model = joblib.load("gb_model.pkl")
-cat_model = CatBoostRegressor()
-cat_model.load_model("catboost_model.cbm")
-
-st.title("🎓 Student Readiness Prediction App")
-
-# Input fields
-st.header("📋 Enter Student Details")
-study_hours = st.number_input("Study Hours per Day", min_value=0.0, max_value=24.0, value=2.0)
-attendance = st.slider("Attendance Percentage", min_value=0, max_value=100, value=75)
-assignments = st.number_input("Assignments Completed", min_value=0, max_value=10, value=5)
-
-# Collect inputs
-input_data = pd.DataFrame([[study_hours, attendance, assignments]],
-                          columns=["study_hours", "attendance", "assignments"])
-
-# Predict button
-if st.button("Predict Readiness"):
-    gb_pred = gb_model.predict(input_data)[0]
-    cat_pred = cat_model.predict(input_data)[0]
-
-    # Threshold for readiness
-    threshold = 0.5
-    gb_result = "Ready ✅" if gb_pred >= threshold else "Not Ready ❌"
-    cat_result = "Ready ✅" if cat_pred >= threshold else "Not Ready ❌"
-
-    st.subheader("🔮 Prediction Results:")
-    st.write(f"**Gradient Boosting Prediction:** {gb_result} (Score: {gb_pred:.2f})")
-    st.write(f"**CatBoost Prediction:** {cat_result} (Score: {cat_pred:.2f})")
-
-
 
 import joblib
 from catboost import CatBoostRegressor
